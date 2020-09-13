@@ -1,37 +1,59 @@
-## Welcome to GitHub Pages
+## TOON SHADER
 
-You can use the [editor on GitHub](https://github.com/cesar3dartist/toon/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+We will go over how to create a toon shader
 
 ### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+The following containts the fragment shader code
 
 ```markdown
-Syntax highlighted code block
+#ifdef GL_ES
+precision highp float;
+#endif
 
-# Header 1
-## Header 2
-### Header 3
+uniform float time;
+uniform vec2 u_resolution;
+uniform vec2 mouse;
+uniform vec3 spectrum;
 
-- Bulleted
-- List
+uniform sampler2D texture0;
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+uniform sampler2D texture3;
+uniform sampler2D prevFrame;
+uniform sampler2D prevPass;
+uniform sampler2D u_picture;
 
-1. Numbered
-2. List
+varying vec3 v_normal;
+varying vec2 v_texcoord;
 
-**Bold** and _Italic_ and `Code` text
+vec3 makeSquare(float size, vec2 st)
+    {
+        float leftbar = step(size, st.x);
+        float rightbar = step(size, 1.0 - st.x);
+        float topbar = step(size, st.y);
+        float bottombar = step(size, 1.0 - st.y);
+        return vec3(leftbar*rightbar*topbar*bottombar);
+    }
 
-[Link](url) and ![Image](src)
+vec2 getst()
+    {
+        return gl_FragCoord.xy/u_resolution.xy;
+    }
+        
+void main(void)
+{
+
+    
+    
+    vec2 st = getst();
+    //vec3 square = makeSquare(sin(time), st);
+    float xzone = smoothstep(0.0, 1.0, st.x);//gradient on X
+    //float yzone = smoothstep(0.0, 1.0, st.y);//gradient on Y
+    
+    vec4 pictureColor = texture2D(u_picture, vec2(v_texcoord.x, (1.0-v_texcoord.y)));
+    pictureColor.rgb = floor(pictureColor.rgb*5.0)/5.0;
+    gl_FragColor = vec4(pictureColor.rgb, 1.0);
+}
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/cesar3dartist/toon/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
