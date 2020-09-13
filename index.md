@@ -43,9 +43,6 @@ vec2 getst()
         
 void main(void)
 {
-
-    
-    
     vec2 st = getst();
     //vec3 square = makeSquare(sin(time), st);
     float xzone = smoothstep(0.0, 1.0, st.x);//gradient on X
@@ -56,4 +53,4 @@ void main(void)
     gl_FragColor = vec4(pictureColor.rgb, 1.0);
 }
 ```
-
+//https://github.com/cesar3dartist/toon/edit/gh-pages/index.md
